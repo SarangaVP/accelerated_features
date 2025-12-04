@@ -273,7 +273,11 @@ if __name__ == '__main__':
         print("Running benchmark for XFeat..")
         from modules.xfeat import XFeat
         xfeat = XFeat()
+
+        start_time = time.time()
         run_pose_benchmark(matcher_fn = xfeat.match_xfeat, loader = loader, ransac_thr = args.ransac_thr)
+        elapsed_time = time.time() - start_time
+        logging.info(f"Benchmark for xfeat completed in {elapsed_time:.2f} seconds.")
 
     elif args.matcher == 'xfeat-star':
         from modules.xfeat import XFeat
