@@ -283,12 +283,20 @@ if __name__ == '__main__':
         from modules.xfeat import XFeat
         print("Running benchmark for XFeat*..")
         xfeat = XFeat(top_k = 10_000)
+
+        start_time = time.time()
         run_pose_benchmark(matcher_fn = xfeat.match_xfeat_star, loader = loader, ransac_thr = args.ransac_thr)
+        elapsed_time = time.time() - start_time
+        logging.info(f"Benchmark for xfeat-star completed in {elapsed_time:.2f} seconds.")
 
     elif args.matcher == 'alike':
         from third_party import alike_wrapper as alike
         print("Running benchmark for ALIKE..")
+
+        start_time = time.time()
         run_pose_benchmark(matcher_fn = alike.match_alike, loader = loader, ransac_thr = args.ransac_thr)
+        elapsed_time = time.time() - start_time
+        logging.info(f"Benchmark for ALIKE completed in {elapsed_time:.2f} seconds.")
 
 
 
