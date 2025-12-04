@@ -17,6 +17,19 @@ import copy
 
 import tqdm
 
+import logging
+import time
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),  # Log to console
+        logging.FileHandler('benchmark_results.log')  # Log to file
+    ]
+)
+
 # Disable scientific notation
 np.set_printoptions(suppress=True)
 
@@ -272,3 +285,7 @@ if __name__ == '__main__':
         from third_party import alike_wrapper as alike
         print("Running benchmark for ALIKE..")
         run_pose_benchmark(matcher_fn = alike.match_alike, loader = loader, ransac_thr = args.ransac_thr)
+
+
+
+
