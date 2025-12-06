@@ -171,6 +171,22 @@ class MatchingDemo:
         self.putText(canvas=top_frame_canvas, text="Target Frame:", org=(650, 30), fontFace=self.font, 
                     fontScale=self.font_scale,  textColor=(0,0,0), borderColor=color, thickness=1, lineType=self.line_type)
         
+        current_method_text = f"Method: {self.method_name}"
+        
+        # Get size of the text to calculate a centered position
+        (text_width, text_height), baseline = cv2.getTextSize(current_method_text, self.font, 1.2, 2)
+        
+        # Center the text: (Total width / 2) - (Text width / 2)
+        org_x = (self.width * 2 // 2) - (text_width // 2)
+        org_y = 70 
+        
+        # Display the current method prominently
+        self.putText(canvas=top_frame_canvas, text=current_method_text, 
+            org=(org_x, org_y), fontFace=self.font, 
+            fontScale=1.2, textColor=(255, 255, 255), borderColor=(0, 0, 0), 
+            thickness=2, lineType=self.line_type)
+        
+        
         self.draw_quad(top_frame_canvas, self.corners)
         
         return top_frame_canvas
@@ -284,6 +300,21 @@ class MatchingDemo:
                 self.paused = not self.paused
                 print(f"[INFO] Paused: {self.paused}")
                 #continue
+
+            elif key == ord('1'):
+                print("[INFO] Switched to ORB")
+                self.method = init_method("ORB", max_kpts=self.args.max_kpts)
+                self.ref_precomp = self.method.descriptor.detectAndCompute(self.ref_frame, None)
+
+            elif key == ord('2'):
+                print("[INFO] Switched to SIFT")
+                self.method = init_method("SIFT", max_kpts=self.args.max_kpts)
+                self.ref_precomp = self.method.descriptor.detectAndCompute(self.ref_frame, None)
+
+            elif key == ord('3'):
+                print("[INFO] Switched to XFeat")
+                self.method = init_method("XFeat", max_kpts=self.args.max_kpts)
+                self.ref_precomp = self.method.descriptor.detectAndCompute(self.ref_frame, None)
 
             # self.current_frame = self.frame_grabber.get_last_frame()
 
