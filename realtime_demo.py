@@ -77,6 +77,7 @@ class MatchingDemo:
         self.width = args.width
         self.height = args.height
         self.ref_frame = None
+        self.paused = False
         self.ref_precomp = [[],[]]
         self.corners = [[50, 50], [640-50, 50], [640-50, 480-50], [50, 480-50]]
         self.current_frame = None
@@ -265,8 +266,12 @@ class MatchingDemo:
             if self.current_frame is None:
                 break
 
-            t0 = time()
-            self.process()
+            if not self.paused:
+                t0 = time()
+                self.process()
+
+            # t0 = time()
+            # self.process()
 
             key = cv2.waitKey(1)
             if key == ord('q'):
@@ -275,13 +280,27 @@ class MatchingDemo:
                 self.ref_frame = self.current_frame.copy()  # Update reference frame
                 self.ref_precomp = self.method.descriptor.detectAndCompute(self.ref_frame, None) #Cache ref features
 
-            self.current_frame = self.frame_grabber.get_last_frame()
+            elif key == ord('p'):
+                self.paused = not self.paused
+                print(f"[INFO] Paused: {self.paused}")
+                #continue
 
-            #Measure avg. FPS
-            self.time_list.append(time()-t0)
-            if len(self.time_list) > self.max_cnt:
-                self.time_list.pop(0)
-            self.FPS = 1.0 / np.array(self.time_list).mean()
+            # self.current_frame = self.frame_grabber.get_last_frame()
+
+            # #Measure avg. FPS
+            # self.time_list.append(time()-t0)
+            # if len(self.time_list) > self.max_cnt:
+            #     self.time_list.pop(0)
+            # self.FPS = 1.0 / np.array(self.time_list).mean()
+
+            if not self.paused:
+                self.current_frame = self.frame_grabber.get_last_frame()
+
+                #Measure avg. FPS
+                self.time_list.append(time()-t0)
+                if len(self.time_list) > self.max_cnt:
+                    self.time_list.pop(0)
+                self.FPS = 1.0 / np.array(self.time_list).mean()
         
         self.cleanup()
 
