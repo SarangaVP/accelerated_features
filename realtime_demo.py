@@ -97,6 +97,7 @@ class MatchingDemo:
         self.time_list = []
         self.max_cnt = 30 #avg FPS over this number of frames
 
+        self.method_name = args.method
         #Set local feature method here -- we expect cv2 or Kornia convention
         self.method = init_method(args.method, max_kpts=args.max_kpts)
         
